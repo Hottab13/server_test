@@ -1,5 +1,5 @@
 const graphql = require("graphql");
-graphql.GraphQLUnionType
+
 const {
   GraphQLObjectType,
   GraphQLString,
@@ -13,7 +13,20 @@ const {
 
 const Nests = require("../modules/nest");
 const Users = require("../modules/user");
-const Tot = Nests.count({})
+//const Tot = Nests.count({})
+
+/*******************************/
+//data.ToString()
+
+const ToStringCura = new GraphQLObjectType({
+    name: "ToStringCura",
+    fields: () => ({
+      data: { type: GraphQLString },
+    }),
+  });
+
+/*******************************/
+
 //.find({})
 const NestType = new GraphQLObjectType({
   name: "Nest",
@@ -36,12 +49,12 @@ const NestType = new GraphQLObjectType({
     },
   }),
 });
-const TotolCountType = new GraphQLObjectType({
+/*const TotolCountType = new GraphQLObjectType({
     name: "CountNests",
     fields: () => ({
       count:{ type: GraphQLInt },
     }),
-  });
+  });*/
 const UsersType = new GraphQLObjectType({
   name: "User",
   fields: () => ({
@@ -275,14 +288,14 @@ const Query = new GraphQLObjectType({
         // Nests.find({}).length
       },
     },
-    countTotalNests: {
+    /*countTotalNests: {
         type: TotolCountType,
         resolve(parent, args) {
           //return nests;
           //const all = Nests.find({}).count({})
           return 11
         },
-      },
+      },*/
     users: {
       type: new GraphQLList(UsersType),
       resolve(parent, args) {
@@ -290,6 +303,12 @@ const Query = new GraphQLObjectType({
         return Users.find({});
       },
     },
+    cura: {
+        type: ToStringCura,
+        resolve(parent, args) {
+          return data.ToString();
+        },
+      },
   },
 });
 
