@@ -31,3 +31,15 @@ dbConnection.once('open', () => console.log('Connected to DB!'));
 app.listen(PORT, err => {
   err ? console.log(err) : console.log('Server started!');
 });
+
+//Код запускающий куру
+var exec = require('child_process').execFile;
+var executeSlicer = function(){
+	console.log("Cura starting");
+	exec('D:/Projects/server_test/server/curaEngine/CuraEngine.exe', function(err, data) {
+		console.log(err)
+		console.log(data.toString());
+	});
+}
+
+executeSlicer(); // Запускаем куру
