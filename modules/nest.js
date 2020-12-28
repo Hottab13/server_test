@@ -9,7 +9,8 @@ const nestSchema = new Schema({
   time:String,
   ageRestrictions:Number,
   amountMaximum:Number,
-  userId:String
+  userId:String,
+  key:String,
 });
 
 module.exports = mongoose.model('Nest', nestSchema);

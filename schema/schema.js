@@ -13,21 +13,7 @@ const {
 
 const Nests = require("../modules/nest");
 const Users = require("../modules/user");
-//const Tot = Nests.count({})
 
-/*******************************/
-//data.ToString()
-
-const ToStringCura = new GraphQLObjectType({
-    name: "ToStringCura",
-    fields: () => ({
-      data: { type: GraphQLString },
-    }),
-  });
-
-/*******************************/
-
-//.find({})
 const NestType = new GraphQLObjectType({
   name: "Nest",
   fields: () => ({
@@ -39,6 +25,7 @@ const NestType = new GraphQLObjectType({
     time: { type: new GraphQLNonNull(GraphQLString) }, //дата проведение
     ageRestrictions: { type: new GraphQLNonNull(GraphQLInt) }, //возрастное ограничение
     amountMaximum: { type: new GraphQLNonNull(GraphQLInt) }, //максимальное количество человек
+    key: { type: new GraphQLNonNull(GraphQLString) },
     user: {
       //связь с юзером
       type: UsersType,
@@ -49,12 +36,6 @@ const NestType = new GraphQLObjectType({
     },
   }),
 });
-/*const TotolCountType = new GraphQLObjectType({
-    name: "CountNests",
-    fields: () => ({
-      count:{ type: GraphQLInt },
-    }),
-  });*/
 const UsersType = new GraphQLObjectType({
   name: "User",
   fields: () => ({
@@ -70,7 +51,6 @@ const UsersType = new GraphQLObjectType({
     nest: {
       type: new GraphQLList(NestType),
       resolve(parent, args) {
-        //return Nests.filter(nest => nest.userId === userId.id);
         return Nests.find({ userId: parent.id });
       },
     },
@@ -149,12 +129,10 @@ const Mutation = new GraphQLObjectType({
     login: {
       type: UsersType,
       args: {
-        // id: { type: GraphQLID } ,
         email: { type: GraphQLString },
         password: { type: GraphQLString },
       },
       resolve(parent, args) {
-        //return users.find(user => user.id == args.id);
         return Users.findOne({
           email: args.email,
           password: args.password,
@@ -267,7 +245,6 @@ const Query = new GraphQLObjectType({
       type: NestType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        //return Nests.find(nest => nest.id == args.id);
         return Nests.findById(args.id);
       },
     },
@@ -275,7 +252,6 @@ const Query = new GraphQLObjectType({
       type: UsersType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        //return users.find(user => user.id == args.id);
         return Users.findById(args.id);
       },
     },
@@ -283,32 +259,15 @@ const Query = new GraphQLObjectType({
       type: new GraphQLList(NestType),
       args: { name: { type: GraphQLString } },
       resolve(parent, {name}) {
-        //const allNests = Nests.find({}).count({})
         return Nests.find({name:{$regex:name, $options:"i"}});
-        // Nests.find({}).length
       },
     },
-    /*countTotalNests: {
-        type: TotolCountType,
-        resolve(parent, args) {
-          //return nests;
-          //const all = Nests.find({}).count({})
-          return 11
-        },
-      },*/
     users: {
       type: new GraphQLList(UsersType),
       resolve(parent, args) {
-        //return nests;
         return Users.find({});
       },
     },
-    cura: {
-        type: ToStringCura,
-        resolve(parent, args) {
-          return data.ToString();
-        },
-      },
   },
 });
 
